@@ -6,15 +6,15 @@ import { fetchEvents } from '../../util/http.jsx';
 
 export default function NewEventsSection() {
   const { data, isPending, isError, error } = useQuery({
-    queryFn: fetchEvents,
-    queryKey: ['events'],
+    queryKey: ['events', {max: 3}],
+    queryFn: ({signal, queryKey})=> fetchEvents({signal, ...queryKey[1]}),
     staleTime: 5000,
   });
 
   let content;
 
   if (isPending) {
-    content = <LoadingIndicator />;
+    content = <LoadingIndicator />
   }
 
   if (isError) {
